@@ -1,4 +1,4 @@
-package com.rossotti.chirp.resources;
+package com.rossotti.chirp.app.resources;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
@@ -9,12 +9,21 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rossotti.chirp.model.User;
+
 @Path("/hello")
 public class HelloResource {
 
 	@GET
+	@Path("/{name}/{age}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response sayHello(@QueryParam("name") String name, @QueryParam("age") String ageString) {
+	public String sayHelloPathParam(@PathParam("name") String name, @PathParam("age") int age) {
+		return "Hello " + name + ", welcome to " + age;
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response sayHelloQueryParam(@QueryParam("name") String name, @QueryParam("age") String ageString) {
 		try {
 			int age = (ageString == null) ? 0 : Integer.valueOf(ageString);
 			String msg = (name == null) ? "Hello!" : "Hello " + name + " welcome to " + age;
@@ -27,16 +36,9 @@ public class HelloResource {
 	
     @GET
     @Path("/{name}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response sayHelloWithName(@PathParam("name") String name){         
-        String responseStr = "Hello "+ name + "!";
-        return Response.status(200).entity(responseStr).build();
-    }
-    
-	@GET
-	@Path("/{name}/{age}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String sayHelloWithName(@PathParam("name") String name, @PathParam("age") int age) {
-		return "Hello " + name + ", welcome to " + age;
-	}
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sayHelloUser(@PathParam("name") String name){
+    	User user = new User(name, "Mr. " + name);
+        return Response.status(200).entity(user).build();
+    } 
 }
