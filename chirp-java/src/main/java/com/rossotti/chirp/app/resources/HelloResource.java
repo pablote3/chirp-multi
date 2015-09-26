@@ -17,13 +17,13 @@ public class HelloResource {
 	@GET
 	@Path("/{name}/{age}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String sayHelloTextPathParam(@PathParam("name") String name, @PathParam("age") int age) {
+	public String produceText_PathParam(@PathParam("name") String name, @PathParam("age") int age) {
 		return "Hello " + name + ", welcome to " + age;
 	}
 	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response sayHelloTextQueryParam(@QueryParam("name") String name, @QueryParam("age") String ageString) {
+	public Response produceText_QueryParam(@QueryParam("name") String name, @QueryParam("age") String ageString) {
 		try {
 			int age = (ageString == null) ? 0 : Integer.valueOf(ageString);
 			String msg = (name == null) ? "Hello!" : "Hello " + name + " welcome to " + age;
@@ -37,14 +37,14 @@ public class HelloResource {
     @GET
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sayHelloUserPathParam(@PathParam("name") String name){
+    public Response produceJsonUser_PathParam(@PathParam("name") String name){
     	User user = new User(name, "Mr. " + name);
         return Response.status(200).entity(user).build();
     } 
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sayHelloUserQueryParam(@QueryParam("name") String name){
+    public Response produceJsonUser_QueryParam(@QueryParam("name") String name){
     	User user = new User(name, "Mr. " + name);
         return Response.status(200).entity(user).build();
     } 
