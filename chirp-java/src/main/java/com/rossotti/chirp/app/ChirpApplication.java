@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import com.rossotti.chirp.resources.HelloResource;
+import com.rossotti.chirp.app.providers.NoSuchEntityExceptionMapper;
+import com.rossotti.chirp.app.resources.HelloResource;
+import com.rossotti.chirp.app.resources.UserResource;
+import com.rossotti.chirp.store.exceptions.DuplicateEntityException;
 
-@ApplicationPath("/")
 public class ChirpApplication extends Application {
 
 	protected final Set<Class<?>> classes = new HashSet<>();
@@ -22,7 +23,14 @@ public class ChirpApplication extends Application {
     }
     
     private void registerClasses() {
+    	
+    	// Resources
     	classes.add(HelloResource.class);
+    	classes.add(UserResource.class);
+    	
+    	// Exception Mappers
+    	classes.add(DuplicateEntityException.class);
+    	classes.add(NoSuchEntityExceptionMapper.class);
     }
     
     @Override
