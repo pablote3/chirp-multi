@@ -1,4 +1,4 @@
-package com.rossotti.chirp.store.memory;
+package com.rossotti.chirp.store;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.rossotti.chirp.model.User;
-import com.rossotti.chirp.store.UsersStore;
-import com.rossotti.chirp.store.UsersStoreUtils;
 import com.rossotti.chirp.store.exceptions.DuplicateEntityException;
 import com.rossotti.chirp.store.exceptions.NoSuchEntityException;
 
@@ -17,19 +15,17 @@ import com.rossotti.chirp.store.exceptions.NoSuchEntityException;
  * deletion of users, which will be covered when modeling RESTful transactions.
  * This class is thread-safe.
  */
-public class InMemoryUsersStore implements UsersStore {
+public class UserStore {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	protected Map<String, User> users;
 
-	private final List<Set<User>> bulkDeletions = new ArrayList<>();
-
-	public InMemoryUsersStore(boolean seedDatabase) {
+	public UserStore(boolean seedDatabase) {
 		users = new ConcurrentHashMap<>();
 		logger.trace("Created new UserRepository with new Users Map");
 
 		if (seedDatabase) {
-			UsersStoreUtils.resetAndSeedRepository(this);
+			UserStoreUtils.resetAndSeedRepository(this);
 		}
 	}
 
@@ -69,43 +65,4 @@ public class InMemoryUsersStore implements UsersStore {
 		if (users.remove(username) == null)
 			throw new NoSuchEntityException();
 	}
-
-//	public final int createBulkDeletion() {
-//		bulkDeletions.add(new HashSet<User>());
-//		return bulkDeletions.size() - 1;
-//	}
-//
-//	public final void addToBulkDeletion(int id, String username) {
-//		try {
-//			bulkDeletions.get(id).add(getUser(username));
-//		} catch (Exception e) {
-//			throw new NoSuchEntityException();
-//		}
-//	}
-//
-//	public final void cancelBulkDeletion(int id) {
-//		try {
-//			bulkDeletions.set(id, null);
-//		} catch (Exception e) {
-//			throw new NoSuchEntityException();
-//		}
-//	}
-//
-//	public final boolean commitBulkDeletion(int id) {
-//		try {
-//			Set<User> bulkDeletion = bulkDeletions.get(id);
-//			for (User user : bulkDeletion) {
-//				if (!users.containsValue(user)) {
-//					return false;
-//				}
-//			}
-//			for (User user : bulkDeletion) {
-//				users.remove(user.getUsername());
-//			}
-//			bulkDeletions.set(id, null);
-//			return true;
-//		} catch (Exception e) {
-//			throw new NoSuchEntityException();
-//		}
-//	}
 }

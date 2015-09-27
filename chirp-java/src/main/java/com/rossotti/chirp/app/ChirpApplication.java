@@ -7,10 +7,10 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import com.rossotti.chirp.app.providers.NoSuchEntityExceptionMapper;
 import com.rossotti.chirp.app.resources.HelloResource;
 import com.rossotti.chirp.app.resources.UserResource;
 import com.rossotti.chirp.store.exceptions.DuplicateEntityException;
+import com.rossotti.chirp.store.exceptions.NoSuchEntityException;
 
 public class ChirpApplication extends Application {
 
@@ -30,7 +30,7 @@ public class ChirpApplication extends Application {
     	
     	// Exception Mappers
     	classes.add(DuplicateEntityException.class);
-    	classes.add(NoSuchEntityExceptionMapper.class);
+    	classes.add(NoSuchEntityException.class);
     }
     
     @Override

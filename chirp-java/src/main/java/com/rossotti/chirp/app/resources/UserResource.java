@@ -1,37 +1,39 @@
 package com.rossotti.chirp.app.resources;
 
+import java.net.URI;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import com.rossotti.chirp.app.MemoryStoreUtil;
 import com.rossotti.chirp.model.User;
-import com.rossotti.chirp.store.memory.InMemoryUsersStore;
+import com.rossotti.chirp.store.UserStore;
 
 @Path("/users")
 public class UserResource {
 
-	InMemoryUsersStore usersStore = MemoryStoreUtil.usersStore;
+	UserStore userStore = MemoryStoreUtil.usersStore;
 
     @GET
-    @Path("/print")
+    @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response produceJsonUser(@QueryParam("username") String username,
-    								@QueryParam("realname") String realname) {
-    	User user = new User(username, realname);
+    public Response getUserJson(@PathParam("username") String username) {
+    	User user = userStore.getUser(username);
         return Response.status(200).entity(user).build();
     } 
 	
 	@PUT
-	@Path("/send")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeJsonUser(User user) {		
-		String output = user.toString();
-		return Response.status(200).entity(output).build();
+	public Response createUserJson(User user) {	
+		userStore.createUser(user.getUsername(), user.getRealname());
+		URI newLocation = UriBuilder.fromResource(UserResource.class).path(user.getUsername()).build();
+		return Response.created(newLocation).build();
 	}	
 }

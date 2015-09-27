@@ -2,25 +2,25 @@ package com.rossotti.chirp.store;
 
 import com.rossotti.chirp.model.User;
 
-public abstract class UsersStoreUtils {
+public abstract class UserStoreUtils {
 
-  public static void resetAndSeedRepository(UsersStore userStore) {
+  public static void resetAndSeedRepository(UserStore userStore) {
 
     userStore.clear();
 
     userStore.createUser("maul", "Darth Maul");
     userStore.createUser("luke", "Luke Skywaler");
 
-//    User vader = userStore.createUser("vader", "Darth Vader");
+    User vader = userStore.createUser("vader", "Darth Vader");
 //    vader.createChirp("You have failed me for the last time.", "wars03");
-//    userStore.updateUser(vader);
-//
-//    User yoda = userStore.createUser("yoda", "Master Yoda");
+    userStore.updateUser(vader);
+
+    User yoda = userStore.createUser("yoda", "Master Yoda");
 //    yoda.createChirp("Do or do not. There is no try.", "wars01");
 //    yoda.createChirp("Fear leads to anger, anger leads to hate, and hate leads to suffering.", "wars02");
-//    userStore.updateUser(yoda);
-//
-//    User jarJar = userStore.createUser("jarjar", "jar Jar Binks");
+    userStore.updateUser(yoda);
+
+    User jarJar = userStore.createUser("jarjar", "jar Jar Binks");
 //    jarJar.createChirp("Ooh mooey mooey I love you!");
 //    jarJar.createChirp("I spake!"); 
 //    jarJar.createChirp("My forgotten, da Bosses will do terrible tings to me TERRRRRIBLE is me going back der!"); 
@@ -44,8 +44,8 @@ public abstract class UsersStoreUtils {
 //    jarJar.createChirp("It's a longo taleo buta small part of it would be mesa... clumsy"); 
 //    jarJar.createChirp("Yousa might'n be sayin dat"); 
 //    jarJar.createChirp("Mesa cause one, two-y little bitty axadentes, huh? Yud say boom de gasser, den crashin der bosses heyblibber, den banished."); 
-//	jarJar.createChirp("Hello boyos."); 
-//    userStore.updateUser(jarJar);
+//	  jarJar.createChirp("Hello boyos."); 
+    userStore.updateUser(jarJar);
     
   }
 }
