@@ -19,7 +19,7 @@ import com.rossotti.chirp.store.UserStore;
 @Path("/users")
 public class UserResource {
 
-	UserStore userStore = MemoryStoreUtil.usersStore;
+	UserStore userStore = MemoryStoreUtil.userStore;
 
     @GET
     @Path("/{username}")
