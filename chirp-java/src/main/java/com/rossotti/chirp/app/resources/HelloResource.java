@@ -15,13 +15,14 @@ import com.rossotti.chirp.model.User;
 public class HelloResource {
 
 	@GET
-	@Path("/{name}/{age}")
+	@Path("/html/{name}/{age}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String produceText_PathParam(@PathParam("name") String name, @PathParam("age") int age) {
-		return "Hello " + name + ", welcome to " + age;
+		return "Howdy " + name + ", welcome to " + age;
 	}
 	
 	@GET
+	@Path("/html")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response produceText_QueryParam(@QueryParam("name") String name, @QueryParam("age") String ageString) {
 		try {
@@ -35,14 +36,15 @@ public class HelloResource {
 	}
 	
     @GET
-    @Path("/{name}")
+    @Path("/json/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response produceJsonUser_PathParam(@PathParam("name") String name){
-    	User user = new User(name, "Mr. " + name);
+    	User user = new User(name, "Dr. " + name);
         return Response.status(200).entity(user).build();
     } 
     
     @GET
+    @Path("/json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response produceJsonUser_QueryParam(@QueryParam("name") String name){
     	User user = new User(name, "Mr. " + name);
