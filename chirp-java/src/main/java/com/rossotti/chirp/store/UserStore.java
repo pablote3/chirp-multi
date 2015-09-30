@@ -36,18 +36,18 @@ public class UserStore {
 		users = new ConcurrentHashMap<>();
 	}
 
-  public final User createUser(String username, String fullName) {
-    if (users.containsKey(username))
-      throw new DuplicateEntityException(username);
+	public final User createUser(String username, String fullName) {
+		if (users.containsKey(username))
+			throw new DuplicateEntityException(username);
 
-    User user = new User(username, fullName);
-    users.put(username, user);
-    return user;
-  }
+		User user = new User(username, fullName);
+		users.put(username, user);
+		return user;
+	}
 
-  public final void updateUser(User user) {
-    users.put(user.getUsername(), user);
-  }
+	public final void updateUser(User user) {
+		users.put(user.getUsername(), user);
+	}
 
 	public final Deque<User> getUsers() {
 		return new LinkedList<>(users.values());
