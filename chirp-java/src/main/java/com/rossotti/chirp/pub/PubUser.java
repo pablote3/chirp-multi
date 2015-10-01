@@ -12,7 +12,7 @@ public class PubUser {
 
 	private final URI self;
   	private final String username;
-  	private final String realName;
+  	private final String realname;
 
 //  	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 //  	private final List<URI> chirpLinks = new ArrayList<>();
@@ -23,23 +23,23 @@ public class PubUser {
   	@JsonCreator
   	public PubUser(@JsonProperty("self") URI self, 
 		  		   @JsonProperty("username") String username, 
-		  		   @JsonProperty("realName") String realName) {
+		  		   @JsonProperty("realname") String realname) {
 	  	super();
 			this.self = self;
 			this.username = username;
-			this.realName = realName;
+			this.realname = realname;
   		}
   
-//  		public PubUser(URI self, String username, String realName, PubChirp... chirps) {
-//	  		this(self, username, realName);
+//  		public PubUser(URI self, String username, String realname, PubChirp... chirps) {
+//	  		this(self, username, realname);
 //	
 //			if (chirps != null) {
 //				Collections.addAll(this.chirps, chirps);
 //			}
 //  		}
   
-//  		public PubUser(URI self, String username, String realName, URI... chirpLinks) {
-//	  		this(self, username, realName);
+//  		public PubUser(URI self, String username, String realname, URI... chirpLinks) {
+//	  		this(self, username, realname);
 //	
 //			if (chirpLinks != null) {
 //				Collections.addAll(this.chirpLinks, chirpLinks);
@@ -62,9 +62,7 @@ public class PubUser {
 			return username;
 		}
 		
-		public String getRealName() {
-			return realName;
-		}
-	
-	  
+		public String getRealname() {
+			return realname;
+		}	  
 	}
