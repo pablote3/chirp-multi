@@ -11,7 +11,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,25 +32,23 @@ public class UserResource {
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserJson(@Context UriInfo uriInfo,
-    							@PathParam("username") String username,
-    							@QueryParam("variant") String variant) {
+    							@PathParam("username") String username) {
     	User user = userStore.getUser(username);
     	
-    	PubUser pubUser = user.toPubUser(variant, uriInfo);
+    	PubUser pubUser = user.toPubUser(uriInfo);
         return Response.ok(pubUser).build();
     }
     
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers(@Context UriInfo uriInfo,
-            				 @QueryParam("variant") String variant) {
+	public Response getUsers(@Context UriInfo uriInfo) {
 		Deque<User> que = userStore.getUsers();
 		
 		URI thisUri = uriInfo.getAbsolutePath();
 		
 		List<PubUser> users = new ArrayList<>();
 		for (User user : que) {
-			PubUser pubUser = user.toPubUser(variant, uriInfo);
+			PubUser pubUser = user.toPubUser(uriInfo);
 			users.add(pubUser);
 		}
 		
