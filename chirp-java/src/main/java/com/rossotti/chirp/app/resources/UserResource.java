@@ -33,25 +33,23 @@ public class UserResource {
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserJson(@Context UriInfo uriInfo,
-    							@PathParam("username") String username,
-    							@QueryParam("variant") String variant) {
+    							@PathParam("username") String username) {
     	User user = userStore.getUser(username);
     	
-    	PubUser pubUser = user.toPubUser(variant, uriInfo);
+    	PubUser pubUser = user.toPubUser(uriInfo);
         return Response.ok(pubUser).build();
     }
     
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers(@Context UriInfo uriInfo,
-            				 @QueryParam("variant") String variant) {
+	public Response getUsers(@Context UriInfo uriInfo) {
 		Deque<User> que = userStore.getUsers();
 		
 		URI thisUri = uriInfo.getAbsolutePath();
 		
 		List<PubUser> users = new ArrayList<>();
 		for (User user : que) {
-			PubUser pubUser = user.toPubUser(variant, uriInfo);
+			PubUser pubUser = user.toPubUser(uriInfo);
 			users.add(pubUser);
 		}
 		
