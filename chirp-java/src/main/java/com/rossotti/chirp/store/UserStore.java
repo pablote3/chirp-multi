@@ -36,11 +36,11 @@ public class UserStore {
 		users = new ConcurrentHashMap<>();
 	}
 
-	public final User createUser(String username, String fullName) {
+	public final User createUser(String username, String realName) {
 		if (users.containsKey(username))
 			throw new DuplicateEntityException(username);
 
-		User user = new User(username, fullName);
+		User user = new User(username, realName);
 		users.put(username, user);
 		return user;
 	}
