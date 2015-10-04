@@ -1,7 +1,6 @@
 package com.rossotti.chirp.model;
 
 import java.net.URI;
-
 import com.rossotti.chirp.pub.PubUser;
 
 /**

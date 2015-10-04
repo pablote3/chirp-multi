@@ -31,8 +31,10 @@ public class UserResource {
     @GET
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
+
     public Response getUser(@Context UriInfo uriInfo,
     						@PathParam("username") String username) {
+
     	User user = userStore.getUser(username);
     	
     	URI self = uriInfo.getAbsolutePath();
