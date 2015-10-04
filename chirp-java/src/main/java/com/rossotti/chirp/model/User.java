@@ -2,8 +2,6 @@ package com.rossotti.chirp.model;
 
 import java.net.URI;
 
-import javax.ws.rs.core.UriInfo;
-
 import com.rossotti.chirp.pub.PubUser;
 
 /**
@@ -30,9 +28,8 @@ public class User {
 		return realname;
 	}
 
-	public PubUser toPubUser(UriInfo uriInfo) {		
-		URI userLink = uriInfo.getBaseUriBuilder().path("users").path(username).build();
-		return new PubUser(userLink, null, this.username, this.realname);
+	public PubUser toPubUser(URI self, URI parent) {		
+		return new PubUser(self, parent, this.username, this.realname);
 	}
 
 	@Override

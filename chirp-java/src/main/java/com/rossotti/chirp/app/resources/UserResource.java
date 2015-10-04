@@ -31,11 +31,14 @@ public class UserResource {
     @GET
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserJson(@Context UriInfo uriInfo,
-    							@PathParam("username") String username) {
+    public Response getUser(@Context UriInfo uriInfo,
+    						@PathParam("username") String username) {
     	User user = userStore.getUser(username);
     	
-    	PubUser pubUser = user.toPubUser(uriInfo);
+    	URI self = uriInfo.getAbsolutePath();
+    	URI parent = uriInfo.getAbsolutePathBuilder().path("..").build();
+    	
+    	PubUser pubUser = user.toPubUser(self, parent);
         return Response.ok(pubUser).build();
     }
     
@@ -44,21 +47,22 @@ public class UserResource {
 	public Response getUsers(@Context UriInfo uriInfo) {
 		Deque<User> que = userStore.getUsers();
 		
-		URI thisUri = uriInfo.getAbsolutePath();
+		URI self = uriInfo.getAbsolutePath();
+		URI parent = uriInfo.getAbsolutePathBuilder().path("..").build();
 		
 		List<PubUser> users = new ArrayList<>();
 		for (User user : que) {
-			PubUser pubUser = user.toPubUser(uriInfo);
+			PubUser pubUser = user.toPubUser(self, parent);
 			users.add(pubUser);
 		}
 		
-		PubUsers pubUsers = new PubUsers(thisUri, users);
+		PubUsers pubUsers = new PubUsers(self, users);
 		return Response.ok(pubUsers).build();
 	}
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUserJson(User user) {	
+	public Response createUser(User user) {	
 		userStore.createUser(user.getUsername(), user.getRealname());
 		URI newLocation = UriBuilder.fromResource(UserResource.class).path(user.getUsername()).build();
 		return Response.created(newLocation).build();
