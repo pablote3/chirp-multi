@@ -1,7 +1,19 @@
 package com.rossotti.chirp.model;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.ws.rs.core.UriInfo;
+
+import com.rossotti.chirp.pub.PubChirp;
 import com.rossotti.chirp.pub.PubUser;
+import com.rossotti.chirp.store.exceptions.DuplicateEntityException;
+import com.rossotti.chirp.store.exceptions.NoSuchEntityException;
 
 /**
  * Entity representing a user of the "chirp" service. A user logically owns a
@@ -11,6 +23,7 @@ public class User {
 
 	private String username;
 	private String realname;
+	private final Map<ChirpId, Chirp> chirps = new TreeMap<ChirpId, Chirp>();
 	
 	public User(){}
 	
@@ -26,9 +39,53 @@ public class User {
 	public String getRealname() {
 		return realname;
 	}
+	
+	public Deque<Chirp> getChirps() {
+		return new LinkedList<Chirp>(chirps.values());
+	}
 
-	public PubUser toPubUser(URI self, URI parent) {		
-		return new PubUser(self, parent, this.username, this.realname);
+	public Chirp getChirp(ChirpId id) {
+		Chirp chirp = chirps.get(id);
+		if (chirp == null)
+			throw new NoSuchEntityException();
+
+		return chirp;
+	}
+	
+	public Chirp createChirp(String content) {
+		ChirpId chirpId = new ChirpId();
+		if (chirps.containsKey(chirpId))
+			throw new DuplicateEntityException(chirpId.toString());
+
+		Chirp chirp = new Chirp(chirpId, content, this);
+		chirps.put(chirpId, chirp);
+		return chirp;
+	}
+
+	public Chirp createChirp(String content, String id) {
+		ChirpId chripId = new ChirpId(id);
+		if (chirps.containsKey(chripId)) {
+			throw new DuplicateEntityException(id);
+		}
+		return addChirp(new Chirp(chripId, content, this));
+	}
+	
+	public Chirp addChirp(Chirp chirp) {
+		this.chirps.put(chirp.getId(), chirp);
+		return chirp;
+	}
+
+	public PubUser toPubUser(UriInfo uriInfo) {
+		URI userUri = uriInfo.getBaseUriBuilder().path("users").path(username).build();
+		
+		List<PubChirp> chirps = new ArrayList<>();
+		for (Chirp chirp : getChirps()) {
+			// TODO use a reference to uriInfo to build this link
+//			URI chirpUri = URI.create("http://localhost:8080/chirps/" + chirp.getId());
+			chirps.add(chirp.toPubChirp(uriInfo));
+		}
+		PubUser user = new PubUser(userUri, this.username, this.realname, chirps.toArray(new PubChirp[0]));
+		return user; 
 	}
 
 	@Override
