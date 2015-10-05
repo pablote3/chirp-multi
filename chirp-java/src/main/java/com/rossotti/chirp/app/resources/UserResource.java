@@ -102,17 +102,17 @@ public class UserResource {
 				.build();
 	}
 	
-//	@POST
-//    @Path("/{username}/chirps")
-//    public Response createChirp(@Context UriInfo uriInfo, 
-//    		                    @PathParam("username") String username,
-//    		                    String content) {
-//
-//		User user = userStore.getUser(username);
-//		Chirp chirp = user.createChirp(content);
-//		userStore.updateUser(user);
-//		
-//		URI location = uriInfo.getBaseUriBuilder().path("chirps").path(chirp.getId().toString()).build();
-//		return Response.created(location).build();
-//	}
+	@POST
+    @Path("/{username}/chirps")
+    public Response createChirp(@Context UriInfo uriInfo, 
+    		                    @PathParam("username") String username,
+    		                    String content) {
+
+		User user = userStore.getUser(username);
+		Chirp chirp = user.createChirp(content);
+		userStore.updateUser(user);
+		
+		URI location = uriInfo.getBaseUriBuilder().path("chirps").path(chirp.getId().toString()).build();
+		return Response.created(location).build();
+	}
 }

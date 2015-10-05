@@ -80,8 +80,6 @@ public class User {
 		
 		List<PubChirp> chirps = new ArrayList<>();
 		for (Chirp chirp : getChirps()) {
-			// TODO use a reference to uriInfo to build this link
-//			URI chirpUri = URI.create("http://localhost:8080/chirps/" + chirp.getId());
 			chirps.add(chirp.toPubChirp(uriInfo));
 		}
 		PubUser user = new PubUser(userUri, this.username, this.realname, chirps.toArray(new PubChirp[0]));
