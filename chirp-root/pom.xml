@@ -38,5 +38,6 @@
   <modules>
     <module>../chirp-java</module>
     <module>../chirp-web</module>
+    <module>../chirp-test</module>
   </modules>
 </project>
